@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+
+public class Sensor
+{
+    public int Id { get; set; }
+    public string Location { get; set; }
+    public List<Reading> Readings { get; set; }
+
+    public Sensor(int id, string location)
+    {
+        Id = id;
+        Location = location;
+        Readings = new List<Reading>();
+    }
+
+    public void AddReading(double temperature)
+    {
+        Reading reading = new Reading(Id, temperature);
+        Readings.Add(reading);
+    }
+}
+
+public class Reading
+{
+    public int SensorId { get; set; }
+    public double Temperature { get; set; }
+
+    public Reading(int sensorId, double temperature)
+    {
+        SensorId = sensorId;
+        Temperature = temperature;
+    }
+}
+
+public class Alert
+{
+    public int SensorId { get; set; }
+    public string Message { get; set; }
+
+    public Alert(int sensorId, string message)
+    {
+        SensorId = sensorId;
+        Message = message;
+    }
+}
+
+public class Program
+{
+    public static void CheckForAlerts(Sensor sensor)
+    {
+        foreach (var reading in sensor.Readings)
+        {
+            if (reading.Temperature > 30) // Przykładowy próg temperatury
+            {
+                Alert alert = new Alert(sensor.Id, $"High temperature alert: {reading.Temperature}°C");
+                Console.WriteLine(alert.Message);
+            }
+        }
+    }
+
+    public static void Main()
+    {
+        Sensor sensor1 = new Sensor(1, "Living Room");
+        sensor1.AddReading(28);
+        sensor1.AddReading(32);
+        CheckForAlerts(sensor1);
+    }
+}

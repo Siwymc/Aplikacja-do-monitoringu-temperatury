@@ -1,0 +1,32 @@
+class Sensor:
+    def __init__(self, id, location):
+        self.id = id
+        self.location = location
+        self.readings = []
+
+    def add_reading(self, temperature):
+        reading = Reading(self.id, temperature)
+        self.readings.append(reading)
+        return reading
+
+class Reading:
+    def __init__(self, sensor_id, temperature):
+        self.sensor_id = sensor_id
+        self.temperature = temperature
+
+class Alert:
+    def __init__(self, sensor_id, message):
+        self.sensor_id = sensor_id
+        self.message = message
+
+def check_for_alerts(sensor):
+    for reading in sensor.readings:
+        if reading.temperature > 30:  # Przykładowy próg temperatury
+            alert = Alert(sensor.id, f"High temperature alert: {reading.temperature}°C")
+            print(alert.message)
+
+# Przykładowe użycie
+sensor1 = Sensor(1, "Living Room")
+sensor1.add_reading(28)
+sensor1.add_reading(32)
+check_for_alerts(sensor1)
